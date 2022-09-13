@@ -7,7 +7,7 @@ async function needExtension(projectPath: string) {
   if (!projectPath) {
     return false;
   }
-
+  
   const packageJsonPath = join(projectPath, "./package.json");
   if (!(await fs.stat(packageJsonPath))) {
     return false;
@@ -46,6 +46,7 @@ export async function getUmiFileWatcher(
   }
 
   logger.info(`watch ${result.length} project \n${result.join("\n")}`);
-  const pattern = `{${result.join(",")}}/**/*.{js.ts,tsx,jsx}`;
+  const pattern = `{${result.join(",")}}/**/*.{js,ts,tsx,jsx}`;
+  logger.info(pattern);
   return vscode.workspace.createFileSystemWatcher(pattern, false, false, false);
 }
