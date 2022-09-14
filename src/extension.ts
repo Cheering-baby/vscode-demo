@@ -4,13 +4,14 @@ import * as vscode from "vscode";
 import { workspace } from "vscode";
 import { getUmiFileWatcher } from "./common/fileWatcher";
 import logger from "./common/logger";
+import { SUPPORT_LANGUAGE } from './common/types';
+import { LocalKeyCompletionItemProvider } from './language/locale';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export async function activate(context: vscode.ExtensionContext) {
   logger.info('extension "umi-pro-test" is now active!');
   const umiFileWatcher = await getUmiFileWatcher(workspace.workspaceFolders);
-  console.log(umiFileWatcher);
 
   umiFileWatcher.onDidChange((e) => console.log(e));
   umiFileWatcher.onDidCreate((e) => console.log(e));
@@ -18,21 +19,8 @@ export async function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
     vscode.languages.registerCompletionItemProvider(
-      "typescript",
-      {
-        provideCompletionItems(
-          document: vscode.TextDocument,
-          position: vscode.Position,
-          token: vscode.CancellationToken,
-          context: vscode.CompletionContext
-        ) {
-          // a simple completion item which inserts `Hello World!`
-          const simpleCompletion = new vscode.CompletionItem("Hello World!");
-
-          // return all completion items as array
-          return [simpleCompletion];
-        },
-      },
+      SUPPORT_LANGUAGE,
+      new LocalKeyCompletionItemProvider(),
       "=",
       " ",
       ":"
