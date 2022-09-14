@@ -14,10 +14,26 @@ export class LocalKeyCompletionItemProvider
     const filePath = document.uri.fsPath;
     // 从当前点向前找50个
     const text = document.getText(
-      new vscode.Range(document.positionAt(document.offsetAt(position) - 50), position)
+      new vscode.Range(
+        document.positionAt(document.offsetAt(position) - 50),
+        position
+      )
     );
-    // a simple completion item which inserts `Hello World!`
-    const simpleCompletion = new vscode.CompletionItem(text);
+
+    const linePrefix = document
+      .lineAt(position)
+      .text.substring(0, position.character + 1);
+    console.log("linePrefix:",linePrefix);
+    if (!linePrefix.endsWith("id=") && !linePrefix.match(/id\s*:\s*}{0,1}$/)) {
+      return [];
+    }
+    console.log(1,text);
+    
+    if (!text.includes("formatMessage")) {
+      return [];
+    }
+    console.log(2);
+    const simpleCompletion = new vscode.CompletionItem("formatMessage");
     return [simpleCompletion];
   }
   resolveCompletionItem?(
