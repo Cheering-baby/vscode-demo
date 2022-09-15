@@ -64,7 +64,6 @@ export class LocalService implements ILocaleService {
     if (!folders) {
       return;
     }
-
     folders
       .map((f) => this.getValidLocaleFile(f.uri.fsPath))
       .filter((f): f is string => !!f)

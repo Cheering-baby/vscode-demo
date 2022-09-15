@@ -39,7 +39,7 @@ export class LocalKeyCompletionItemProvider
     const keys = this.localeService.getKeys(filePath);
 
     let quoteType = QuoteType.single;
-
+    console.log(keys);
     return keys.map(k => {
       return new vscode.CompletionItem(quoteString(k, quoteType), vscode.CompletionItemKind.Value);
     });
