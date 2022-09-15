@@ -43,7 +43,14 @@
 		"@vscode/test-electron": "^2.1.5"
 	},
 	"dependencies": {
-		"typedi": "latest",
-		"mz": "^2.7.0"
+		"@babel/generator": "^7.4.4",
+		"@babel/parser": "^7.4.5",
+		"@babel/traverse": "^7.4.5",
+		"@babel/types": "^7.4.4",
+		"globby": "^9.2.0",
+		"lodash": "^4.17.11",
+		"mz": "^2.7.0",
+		"reflect-metadata": "^0.1.13",
+		"typedi": "^0.8.0"
 	}
 }

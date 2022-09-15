@@ -1,8 +1,18 @@
 import * as vscode from "vscode";
+import { QuoteType } from '../../common/types';
+import { quoteString } from '../../common/utils';
+import { ILocaleService } from '../../services/localService';
 
 export class LocalKeyCompletionItemProvider
   implements vscode.CompletionItemProvider
 {
+
+  private localeService:ILocaleService;
+
+  constructor(localeServiceToken: ILocaleService) {
+    this.localeService = localeServiceToken;
+  }
+
   provideCompletionItems(
     document: vscode.TextDocument,
     position: vscode.Position,
@@ -12,29 +22,27 @@ export class LocalKeyCompletionItemProvider
     vscode.CompletionItem[] | vscode.CompletionList<vscode.CompletionItem>
   > {
     const filePath = document.uri.fsPath;
-    // 从当前点向前找50个
+    // 从当前点向前找50个字符
     const text = document.getText(
-      new vscode.Range(
-        document.positionAt(document.offsetAt(position) - 50),
-        position
-      )
+      new vscode.Range(document.positionAt(document.offsetAt(position) - 50), position)
     );
 
     const linePrefix = document
       .lineAt(position)
       .text.substring(0, position.character + 1);
-    console.log("linePrefix:",linePrefix);
     if (!linePrefix.endsWith("id=") && !linePrefix.match(/id\s*:\s*}{0,1}$/)) {
       return [];
     }
-    console.log(1,text);
-    
     if (!text.includes("formatMessage")) {
       return [];
     }
-    console.log(2);
-    const simpleCompletion = new vscode.CompletionItem("formatMessage");
-    return [simpleCompletion];
+    const keys = this.localeService.getKeys(filePath);
+
+    let quoteType = QuoteType.single;
+
+    return keys.map(k => {
+      return new vscode.CompletionItem(quoteString(k, quoteType), vscode.CompletionItemKind.Value);
+    });
   }
   resolveCompletionItem?(
     item: vscode.CompletionItem,
