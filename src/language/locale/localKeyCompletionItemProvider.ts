@@ -1,13 +1,12 @@
 import * as vscode from "vscode";
-import { QuoteType } from '../../common/types';
-import { quoteString } from '../../common/utils';
-import { ILocaleService } from '../../services/localService';
+import { QuoteType } from "../../common/types";
+import { quoteString } from "../../common/utils";
+import { ILocaleService } from "../../services/localService";
 
 export class LocalKeyCompletionItemProvider
   implements vscode.CompletionItemProvider
 {
-
-  private localeService:ILocaleService;
+  private localeService: ILocaleService;
 
   constructor(localeServiceToken: ILocaleService) {
     this.localeService = localeServiceToken;
@@ -24,7 +23,10 @@ export class LocalKeyCompletionItemProvider
     const filePath = document.uri.fsPath;
     // 从当前点向前找50个字符
     const text = document.getText(
-      new vscode.Range(document.positionAt(document.offsetAt(position) - 50), position)
+      new vscode.Range(
+        document.positionAt(document.offsetAt(position) - 50),
+        position
+      )
     );
 
     const linePrefix = document
@@ -39,9 +41,11 @@ export class LocalKeyCompletionItemProvider
     const keys = this.localeService.getKeys(filePath);
 
     let quoteType = QuoteType.single;
-    console.log(keys);
-    return keys.map(k => {
-      return new vscode.CompletionItem(quoteString(k, quoteType), vscode.CompletionItemKind.Value);
+    return keys.map((k) => {
+      return new vscode.CompletionItem(
+        quoteString(k, quoteType),
+        vscode.CompletionItemKind.Value
+      );
     });
   }
   resolveCompletionItem?(

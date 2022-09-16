@@ -4,7 +4,7 @@ import { IVscodeService, VscodeServiceToken } from "./vscodeService";
 import { ILocaleParser, LocaleParser } from "./parser/localeParser";
 import Container from "typedi";
 import { join } from "path";
-import { existsSync } from "fs";
+import { existsSync, readdirSync } from "fs";
 import * as vscode from "vscode";
 
 export interface ILocaleService {
@@ -16,7 +16,7 @@ export interface ILocaleService {
   initLocales(): void;
   updateFile(filePath: string): void;
   deleteFile(filePath: string): void;
-  getValidLocaleFile(filePath: string): string | undefined;
+  getValidLocaleFile(filePath: string): string[] | undefined;
 }
 
 export class LocalService implements ILocaleService {
@@ -38,7 +38,7 @@ export class LocalService implements ILocaleService {
     this.config = null;
   }
 
-  getData(): { [projectPath: string]: ILocale[]; } {
+  getData(): { [projectPath: string]: ILocale[] } {
     return this.data;
   }
 
@@ -66,9 +66,11 @@ export class LocalService implements ILocaleService {
     }
     folders
       .map((f) => this.getValidLocaleFile(f.uri.fsPath))
-      .filter((f): f is string => !!f)
+      .filter((f): f is string[] => !!f)
       .forEach(async (f) => {
-        await this.updateFile(f);
+        for (let i = 0; i < f.length; i++) {
+          await this.updateFile(f[i]);
+        }
       });
   };
 
@@ -83,7 +85,11 @@ export class LocalService implements ILocaleService {
       }
 
       const result = await this.parser.parseFile(filePath);
-      this.data[this.projectPath] = result;
+      if (!this.data[this.projectPath]) {
+        this.data[this.projectPath] = result;
+      } else {
+        this.data[this.projectPath].push(...result);
+      }
     } catch (error) {
       this.logger.info(error.message);
     }
@@ -99,7 +105,7 @@ export class LocalService implements ILocaleService {
   };
 
   public getValidLocaleFile(filePath: string) {
-    return this.getLocaleFiles(filePath).find((l) => existsSync(l));
+    return this.getLocaleFiles(filePath).filter((l) => existsSync(l));
   }
 
   private isValidLocaleFile(filePath: string) {
@@ -114,12 +120,20 @@ export class LocalService implements ILocaleService {
     }
     this.config = config;
     this.projectPath = projectPath;
-    const locale = "en-US";
-    return [
-      join(this.projectPath, "src", "locales", `${locale}.js`),
-      join(this.projectPath, "src", "locales", `${locale}.ts`),
-      join(this.projectPath, "src", "locale", `${locale}.js`),
-      join(this.projectPath, "src", "locale", `${locale}.ts`),
-    ];
+    const localeProjectPath = join(this.projectPath, "src", "default_i18n");
+    const file = readdirSync(localeProjectPath);
+    // console.log(
+    //   file.filter((i) => i.includes(".")).map((i) => join(localeProjectPath, i))
+    // );
+    // const locale = "en-US";
+    // return [
+    //   join(this.projectPath, "src", "locales", `${locale}.js`),
+    //   join(this.projectPath, "src", "locales", `${locale}.ts`),
+    //   join(this.projectPath, "src", "locale", `${locale}.js`),
+    //   join(this.projectPath, "src", "locale", `${locale}.ts`),
+    // ];
+    return file
+      .filter((i) => i.includes("."))
+      .map((i) => join(localeProjectPath, i));
   }
 }
