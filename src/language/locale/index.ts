@@ -1,1 +1,2 @@
-export * from './localKeyCompletionItemProvider';
+export * from './localeKeyCompletionItemProvider';
+export * from './localeDefinitionProvider';

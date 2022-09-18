@@ -1,22 +1,22 @@
 import { join } from "path";
-import * as fs from "fs/promises";
+import * as fs from "fs";
 import * as vscode from "vscode";
 import logger from "./logger";
 
-async function needExtension(projectPath: string) {
+function needExtension(projectPath: string) {
   if (!projectPath) {
     return false;
   }
 
   const packageJsonPath = join(projectPath, "./package.json");
 
-  if (!(await fs.stat(packageJsonPath))) {
+  if (!fs.existsSync(packageJsonPath)) {
     return false;
   }
 
   try {
     const packageJson = JSON.parse(
-      await fs.readFile(packageJsonPath, { encoding: "utf-8" })
+      fs.readFileSync(packageJsonPath, { encoding: "utf-8" })
     );
     const { dependencies } = packageJson;
     return !!(dependencies?.umi || dependencies?.dva);
@@ -38,7 +38,7 @@ export async function getUmiFileWatcher(
     const {
       uri: { fsPath },
     } = workspaceFolder;
-    if (await needExtension(fsPath)) {
+    if (needExtension(fsPath)) {
       result.push(fsPath);
     }
   }

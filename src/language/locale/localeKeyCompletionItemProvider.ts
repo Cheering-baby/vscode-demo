@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import { QuoteType } from "../../common/types";
 import { quoteString } from "../../common/utils";
-import { ILocaleService } from "../../services/localService";
+import { ILocaleService } from "../../services/localeService";
 
 export class LocalKeyCompletionItemProvider
   implements vscode.CompletionItemProvider
