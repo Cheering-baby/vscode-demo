@@ -16,7 +16,7 @@ export interface IVscodeService {
   ): void;
 }
 
-const CONFIG_NAMESPACE = 'umi_pro';
+const CONFIG_NAMESPACE = 'cre';
 
 /**
  *
@@ -105,7 +105,7 @@ export class VscodeService implements IVscodeService {
           ],
         ],
       },
-      locale: userConfig.get<string>('locale') || 'zh-CN',
+      localeFolder: userConfig.get<string>('locale_folder') || 'default_i18n',
     };
     const userQuotesConfig = userConfig.get<QuoteType>('quotes');
     if (userQuotesConfig && Object.values(QuoteType).includes(userQuotesConfig)) {

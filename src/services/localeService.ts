@@ -47,6 +47,28 @@ export class LocalService implements ILocaleService {
     if (!projectPath) {
       return [];
     }
+
+    const packagesFolder = join(projectPath, "packages");
+
+    // filePath: "d:\\project\\xxx\\xxx\\packages\\cre-test-admin-portal\\index.js"
+    // 获取cre-test-admin-portal字符串
+    const reg1 = /packages\\*[\w|_|-]*/;
+    const folderName1 = reg1.exec(filePath)?.[0].split("\\")?.[1];
+    if (existsSync(packagesFolder)) {
+      return this.data[projectPath]
+        .filter((r) => {
+          const {
+            fileUri: { path },
+          } = r;
+
+          // path: /d:/project/xxx/xxx/packages/cre-test-admin-portal/src/default_i18n/approval_quotation.js
+          // 获取cre-test-admin-portal字符串
+          const reg2 = /packages\/*[\w|_|-]*/;
+          const folderName2 = reg2.exec(path)?.[0].split("/")?.[1];
+          return folderName1 === folderName2;
+        })
+        .map((r) => r.key);
+    }
     return this.data[projectPath].map((r) => r.key);
   };
 
@@ -64,8 +86,11 @@ export class LocalService implements ILocaleService {
     if (!folders) {
       return;
     }
+
     folders
-      .map((f) => this.getValidLocaleFile(f.uri.fsPath))
+      .map((f) => {
+        return this.getValidLocaleFile(f.uri.fsPath);
+      })
       .filter((f): f is string[] => !!f)
       .forEach(async (f) => {
         for (let i = 0; i < f.length; i++) {
@@ -120,25 +145,44 @@ export class LocalService implements ILocaleService {
     }
     this.config = config;
     this.projectPath = projectPath;
-    const localeProjectPath = join(this.projectPath, "src", "default_i18n");
 
-    if(!existsSync(localeProjectPath)) {
-      return [];
+    const packagesFolder = join(projectPath, "packages");
+    // 判断是否存在packages目录 lerna项目
+    if (existsSync(packagesFolder)) {
+      const file = readdirSync(packagesFolder);
+      const localeFiles = [];
+      file.forEach((i) => {
+        const localeProjectPath = join(
+          packagesFolder,
+          i,
+          "src",
+          this.config.localeFolder
+        );
+
+        if (existsSync(localeProjectPath)) {
+          localeFiles.push(
+            ...readdirSync(localeProjectPath)
+              .filter((i) => i.includes("."))
+              .map((i) => join(localeProjectPath, i))
+          );
+        }
+      });
+      return localeFiles;
+    } else {
+      const localeProjectPath = join(
+        this.projectPath,
+        "src",
+        this.config.localeFolder
+      );
+
+      if (!existsSync(localeProjectPath)) {
+        return [];
+      }
+
+      const localeFiles = readdirSync(localeProjectPath);
+      return localeFiles
+        .filter((i) => i.includes("."))
+        .map((i) => join(localeProjectPath, i));
     }
-
-    const file = readdirSync(localeProjectPath);
-    // console.log(
-    //   file.filter((i) => i.includes(".")).map((i) => join(localeProjectPath, i))
-    // );
-    // const locale = "en-US";
-    // return [
-    //   join(this.projectPath, "src", "locales", `${locale}.js`),
-    //   join(this.projectPath, "src", "locales", `${locale}.ts`),
-    //   join(this.projectPath, "src", "locale", `${locale}.js`),
-    //   join(this.projectPath, "src", "locale", `${locale}.ts`),
-    // ];
-    return file
-      .filter((i) => i.includes("."))
-      .map((i) => join(localeProjectPath, i));
   }
 }

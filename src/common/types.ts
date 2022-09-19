@@ -21,7 +21,7 @@ export interface IUmiProConfig {
   routerExcludePath: string[];
   saveOnGenerateEffectsCommandTimeout: number;
   autoGenerateSagaEffectsCommands: boolean;
-  locale: string;
+  localeFolder: string;
 }
 
 export const DEFAULT_ROUTER_CONFIG_PATH = [

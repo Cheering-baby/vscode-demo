@@ -19,8 +19,13 @@ import {
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export async function activate(context: vscode.ExtensionContext) {
-  logger.info('extension "umi-pro-test" is now active!');
+  logger.info('extension "cre-umi-pro" is now active!');
   const umiFileWatcher = await getUmiFileWatcher(workspace.workspaceFolders);
+
+  if (!umiFileWatcher) {
+    logger.info('no project use umi');
+    return;
+  }
 
   const localeService = new LocalService();
   umiFileWatcher.onDidCreate((e) => localeService.updateFile(e.fsPath));
@@ -33,11 +38,6 @@ export async function activate(context: vscode.ExtensionContext) {
   workspace.onDidChangeWorkspaceFolders(() => loadVscodeService(vscodeService));
   workspace.onDidChangeConfiguration(() => loadVscodeService(vscodeService));
 
-  // Get the configuration
-  const configuration = vscode.workspace.getConfiguration();
-
-  configuration.update("cre.locale.filename", "default_i18n");
-  console.log(configuration.get("cre.locale.filename"));
   context.subscriptions.push(
     vscode.languages.registerCompletionItemProvider(
       SUPPORT_LANGUAGE,

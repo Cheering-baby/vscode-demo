@@ -19,7 +19,19 @@
 				"command": "helloworld.helloWorld",
 				"title": "Hello World"
 			}
-		]
+		],
+		"configuration": {
+			"type": "object",
+			"title": "Cre Config",
+			"properties": {
+				"cre.locale_folder": {
+					"type": "string",
+					"scope": "resource",
+					"default": "default_i18n",
+					"description": "Customize locale folder"
+				}
+			}
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
