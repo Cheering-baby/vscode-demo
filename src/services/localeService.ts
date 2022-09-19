@@ -121,6 +121,11 @@ export class LocalService implements ILocaleService {
     this.config = config;
     this.projectPath = projectPath;
     const localeProjectPath = join(this.projectPath, "src", "default_i18n");
+
+    if(!existsSync(localeProjectPath)) {
+      return [];
+    }
+
     const file = readdirSync(localeProjectPath);
     // console.log(
     //   file.filter((i) => i.includes(".")).map((i) => join(localeProjectPath, i))
