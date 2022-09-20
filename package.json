@@ -1,11 +1,12 @@
 {
-	"name": "helloworld",
-	"displayName": "",
+	"name": "cre-plugin",
+	"displayName": "Cre Plugin",
 	"description": "",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"engines": {
 		"vscode": "^1.69.0"
 	},
+	"icon": "creIcon.png",
 	"categories": [
 		"Other"
 	],
@@ -14,6 +15,7 @@
 	],
 	"repository": "https://github.com/Cheering-baby/vscode-demo",
 	"main": "./out/extension.js",
+	"publisher": "DaiZhiHong",
 	"contributes": {
 		"commands": [
 			{

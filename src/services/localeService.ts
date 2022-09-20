@@ -6,6 +6,7 @@ import Container from "typedi";
 import { join } from "path";
 import { existsSync, readdirSync } from "fs";
 import * as vscode from "vscode";
+import { getFolderNameByOne, getFolderNameByTwo } from '../common/utils';
 
 export interface ILocaleService {
   getData(): {
@@ -50,21 +51,15 @@ export class LocalService implements ILocaleService {
 
     const packagesFolder = join(projectPath, "packages");
 
-    // filePath: "d:\\project\\xxx\\xxx\\packages\\cre-test-admin-portal\\index.js"
-    // 获取cre-test-admin-portal字符串
-    const reg1 = /packages\\*[\w|_|-]*/;
-    const folderName1 = reg1.exec(filePath)?.[0].split("\\")?.[1];
+    const folderName1 = getFolderNameByOne(filePath);
     if (existsSync(packagesFolder)) {
       return this.data[projectPath]
         .filter((r) => {
           const {
             fileUri: { path },
           } = r;
-
-          // path: /d:/project/xxx/xxx/packages/cre-test-admin-portal/src/default_i18n/approval_quotation.js
-          // 获取cre-test-admin-portal字符串
-          const reg2 = /packages\/*[\w|_|-]*/;
-          const folderName2 = reg2.exec(path)?.[0].split("/")?.[1];
+          
+          const folderName2 = getFolderNameByTwo(path);
           return folderName1 === folderName2;
         })
         .map((r) => r.key);
@@ -91,7 +86,9 @@ export class LocalService implements ILocaleService {
       .map((f) => {
         return this.getValidLocaleFile(f.uri.fsPath);
       })
-      .filter((f): f is string[] => !!f)
+      .filter((f): f is string[] => {
+        return !!f;
+      })
       .forEach(async (f) => {
         for (let i = 0; i < f.length; i++) {
           await this.updateFile(f[i]);
@@ -108,12 +105,12 @@ export class LocalService implements ILocaleService {
       if (!localeFile) {
         return;
       }
-
+      const projectPath = this.vscodeService.getProjectPath(filePath);
       const result = await this.parser.parseFile(filePath);
-      if (!this.data[this.projectPath]) {
-        this.data[this.projectPath] = result;
+      if (!this.data[projectPath]) {
+        this.data[projectPath] = result;
       } else {
-        this.data[this.projectPath].push(...result);
+        this.data[projectPath].push(...result);
       }
     } catch (error) {
       this.logger.info(error.message);
