@@ -10,6 +10,7 @@ import {
   LocaleDefinitionProvider,
   LocalKeyCompletionItemProvider,
 } from "./language/locale";
+import { UmircDecoration } from './language/umircDecoration';
 import { LocalService } from "./services/localeService";
 import {
   loadVscodeService,
@@ -54,6 +55,8 @@ export async function activate(context: vscode.ExtensionContext) {
       new LocaleDefinitionProvider(localeService)
     )
   );
+
+  context.subscriptions.push(Container.get(UmircDecoration));
 }
 
 // this method is called when your extension is deactivated

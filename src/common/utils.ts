@@ -85,7 +85,7 @@ export function flatten(arr: Array<any>) {
  * @return cre-test-admin-portal
  */
 export function getFolderNameByOne(filePath: string): string {
-  const reg = /packages\\*[\w|_|-]*/;
+  const reg = /packages\\*(\w|_|-)*/;
   return reg.exec(filePath)?.[0].split("\\")?.[1];
 }
 
@@ -95,6 +95,6 @@ export function getFolderNameByOne(filePath: string): string {
  * @return cre-test-admin-portal
  */
 export function getFolderNameByTwo(filePath: string): string {
-  const reg = /packages\/*[\w|_|-]*/;
+  const reg = /packages\/*(\w|_|-)*/;
   return reg.exec(filePath)?.[0].split("/")?.[1];
 }

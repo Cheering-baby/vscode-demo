@@ -31,7 +31,7 @@ export class LocalService implements ILocaleService {
   private parser: ILocaleParser;
 
   constructor() {
-    Logger.info("LocalService!");
+    // Logger.info("LocalService!");
     this.vscodeService = Container.get(VscodeServiceToken);
     this.parser = new LocaleParser();
     this.data = {};
