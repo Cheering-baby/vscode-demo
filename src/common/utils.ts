@@ -1,9 +1,11 @@
 import { join, resolve, dirname } from "path";
 import * as fs from "mz/fs";
 import globby from "globby";
+import * as vscode from "vscode";
 import { QuoteType, QuoteCharMap, JS_EXT_NAMES } from "./types";
 import { Range, Position } from "vscode";
 import { SourceLocation } from "@babel/types";
+import path = require("path");
 
 export async function getModels(cwd: string): Promise<string[]> {
   for (const extName of JS_EXT_NAMES) {
@@ -80,7 +82,7 @@ export function flatten(arr: Array<any>) {
 }
 
 /**
- * 
+ *
  * @param filePath d:\\project\\xxx\\xxx\\packages\\cre-test-admin-portal\\index.js
  * @return cre-test-admin-portal
  */
@@ -90,11 +92,41 @@ export function getFolderNameByOne(filePath: string): string {
 }
 
 /**
- * 
+ *
  * @param filePath /d:/project/xxx/xxx/packages/cre-test-admin-portal/src/default_i18n/approval_quotation.js
  * @return cre-test-admin-portal
  */
 export function getFolderNameByTwo(filePath: string): string {
   const reg = /packages\/*(\w|_|-)*/;
   return reg.exec(filePath)?.[0].split("/")?.[1];
+}
+
+export interface ICodeInfo {
+  line: vscode.TextLine;
+  word: string;
+  fileName: string;
+  directory: string;
+}
+
+export function getFocusCodeInfo(
+  document: vscode.TextDocument,
+  position: vscode.Position
+): ICodeInfo {
+  return {
+    // Code info
+    line: document.lineAt(position),
+    word: document.getText(document.getWordRangeAtPosition(position)),
+
+    // File info
+    fileName: document.fileName,
+    directory: path.dirname(document.fileName),
+  };
+}
+
+export function getFilenameWithoutExtname(fileName: string): string {
+  if ([".js", ".ts", ".jsx", ".tsx"].includes(path.extname(fileName))) {
+    return path.basename(fileName, path.extname(fileName));
+  } else {
+    return fileName;
+  }
 }

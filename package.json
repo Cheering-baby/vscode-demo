@@ -18,16 +18,16 @@
 	"publisher": "DaiZhiHong",
 	"contributes": {
 		"colors": [
-      {
-        "id": "umipro.annotationColor",
-        "description": "text color of line annotations",
-        "defaults": {
-          "dark": "#99999950",
-          "light": "#999999A6",
-          "highContrast": "#99999999"
-        }
-      }
-    ],
+			{
+				"id": "umipro.annotationColor",
+				"description": "text color of line annotations",
+				"defaults": {
+					"dark": "#99999950",
+					"light": "#999999A6",
+					"highContrast": "#99999999"
+				}
+			}
+		],
 		"commands": [
 			{
 				"command": "helloworld.helloWorld",
@@ -75,6 +75,7 @@
 		"@babel/traverse": "^7.4.5",
 		"@babel/types": "^7.4.4",
 		"globby": "^9.2.0",
+		"less": "^4.1.3",
 		"lodash": "^4.17.11",
 		"mz": "^2.7.0",
 		"reflect-metadata": "^0.1.13",

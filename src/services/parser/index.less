@@ -1,0 +1,27 @@
+@width: 10px;
+@height: @width + 10px;
+
+#header {
+  width: @width;
+  height: @height;
+
+  .test {
+    color: antiquewhite;
+    font-size: 12px;
+  }
+
+  + .test {
+    background-color: aqua;
+  }
+}
+
+#header .navigation {
+  font-size: 12px;
+}
+#header .logo {
+  width: 300px;
+}
+
+.container {
+  text-align: center;
+}

@@ -4,6 +4,10 @@ Extension "Cre Plugin". Based on umi pro.
 
 ## Features
 
+## 将要提供的功能
+
+- styles类名跳转
+
 ### 2022.09.21
 
 ### 2022.09.19

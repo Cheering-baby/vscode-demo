@@ -48,10 +48,4 @@ export class LocalKeyCompletionItemProvider
       );
     });
   }
-  resolveCompletionItem?(
-    item: vscode.CompletionItem,
-    token: vscode.CancellationToken
-  ): vscode.ProviderResult<vscode.CompletionItem> {
-    throw new Error("Method not implemented.");
-  }
 }

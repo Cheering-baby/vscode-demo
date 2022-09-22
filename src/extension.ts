@@ -10,8 +10,10 @@ import {
   LocaleDefinitionProvider,
   LocalKeyCompletionItemProvider,
 } from "./language/locale";
-import { UmircDecoration } from './language/umircDecoration';
+import { StyleCompletionItemProvider } from "./language/style/styleComletionItemProvider";
+import { UmircDecoration } from "./language/umircDecoration";
 import { LocalService } from "./services/localeService";
+import { LessParser } from "./services/parser/lessParse";
 import {
   loadVscodeService,
   VscodeServiceToken,
@@ -24,7 +26,7 @@ export async function activate(context: vscode.ExtensionContext) {
   const umiFileWatcher = await getUmiFileWatcher(workspace.workspaceFolders);
 
   if (!umiFileWatcher) {
-    logger.info('no project use umi');
+    logger.info("no project use umi");
     return;
   }
 
@@ -39,6 +41,7 @@ export async function activate(context: vscode.ExtensionContext) {
   workspace.onDidChangeWorkspaceFolders(() => loadVscodeService(vscodeService));
   workspace.onDidChangeConfiguration(() => loadVscodeService(vscodeService));
 
+  // locale自动补全
   context.subscriptions.push(
     vscode.languages.registerCompletionItemProvider(
       SUPPORT_LANGUAGE,
@@ -46,6 +49,14 @@ export async function activate(context: vscode.ExtensionContext) {
       "=",
       " ",
       ":"
+    )
+  );
+
+  // style自动补全
+  context.subscriptions.push(
+    vscode.languages.registerCompletionItemProvider(
+      SUPPORT_LANGUAGE,
+      new StyleCompletionItemProvider()
     )
   );
 
