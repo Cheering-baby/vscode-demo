@@ -77,8 +77,44 @@ export enum Brackets {
   CURLY = '{}',
 }
 
+// import styles from './xxx.css'; -> { source: './xxx.css', identifier: 'styles' }
+// import './xxx.css'; -> { source: './xxx.css', identifier: null }
+export interface IStyleDependency {
+  source: string;
+  identifier: string | null;
+}
+
+export interface ICodeInfo {
+  line: vscode.TextLine;
+  word: string;
+  fileName: string;
+  directory: string;
+}
+
+// https://www.npmjs.com/package/css
+export interface IStylePosition {
+  start: {
+    line: number;
+    column: number;
+  };
+  end: {
+    line: number;
+    column: number;
+  };
+}
+
+export interface IStyle {
+  type: string;
+  selectors: string[];
+  position: IStylePosition;
+  file: string;
+  code: string;
+}
+
 export const JS_EXT_NAMES = ['.js', '.jsx', '.ts', '.tsx'];
 
 export const EXCLUDE_EXT_NAMES = ['.d.ts', '.test.js', '.test.jsx', '.test.ts', '.test.tsx'];
 
 export const SUPPORT_LANGUAGE = ['javascript', 'typescript', 'typescriptreact'];
+
+export const supportCssFiles = ["css", "scss", "sass", "less"];

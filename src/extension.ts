@@ -10,10 +10,9 @@ import {
   LocaleDefinitionProvider,
   LocalKeyCompletionItemProvider,
 } from "./language/locale";
-import { StyleCompletionItemProvider } from "./language/style/styleComletionItemProvider";
+import styleInfoViewer from './language/style';
 import { UmircDecoration } from "./language/umircDecoration";
 import { LocalService } from "./services/localeService";
-import { LessParser } from "./services/parser/lessParse";
 import {
   loadVscodeService,
   VscodeServiceToken,
@@ -41,31 +40,26 @@ export async function activate(context: vscode.ExtensionContext) {
   workspace.onDidChangeWorkspaceFolders(() => loadVscodeService(vscodeService));
   workspace.onDidChangeConfiguration(() => loadVscodeService(vscodeService));
 
-  // locale自动补全
-  context.subscriptions.push(
-    vscode.languages.registerCompletionItemProvider(
-      SUPPORT_LANGUAGE,
-      new LocalKeyCompletionItemProvider(localeService),
-      "=",
-      " ",
-      ":"
-    )
-  );
+  // // locale自动补全
+  // context.subscriptions.push(
+  //   vscode.languages.registerCompletionItemProvider(
+  //     SUPPORT_LANGUAGE,
+  //     new LocalKeyCompletionItemProvider(localeService),
+  //     "=",
+  //     " ",
+  //     ":"
+  //   )
+  // );
 
-  // style自动补全
-  context.subscriptions.push(
-    vscode.languages.registerCompletionItemProvider(
-      SUPPORT_LANGUAGE,
-      new StyleCompletionItemProvider()
-    )
-  );
+  // // locale定义文件跳转
+  // context.subscriptions.push(
+  //   vscode.languages.registerDefinitionProvider(
+  //     SUPPORT_LANGUAGE,
+  //     new LocaleDefinitionProvider(localeService)
+  //   )
+  // );
 
-  context.subscriptions.push(
-    vscode.languages.registerDefinitionProvider(
-      SUPPORT_LANGUAGE,
-      new LocaleDefinitionProvider(localeService)
-    )
-  );
+  styleInfoViewer(context);
 
   context.subscriptions.push(Container.get(UmircDecoration));
 }

@@ -10,8 +10,9 @@ import {
   VscodeServiceToken,
 } from "../../services/vscodeService";
 import Container from "typedi";
+import { findStyleDependencies } from "../../common/stylesUtils";
 
-export class StyleCompletionItemProvider
+export default class StyleCompletionItemProvider
   implements vscode.CompletionItemProvider
 {
   public readonly vscodeService: IVscodeService;
@@ -32,7 +33,6 @@ export class StyleCompletionItemProvider
     const filePath = document.uri.fsPath;
     const config = this.vscodeService.getConfig(filePath);
     const { directory, fileName } = getFocusCodeInfo(document, position);
-    console.log(directory, fileName);
 
     const completionClassNameItem = new vscode.CompletionItem(
       "className={}",
@@ -41,18 +41,21 @@ export class StyleCompletionItemProvider
     completionClassNameItem.detail = "Cre Config ClassName";
     completions.push(completionClassNameItem);
 
+    const styleDependencies = findStyleDependencies(editorText, config);
     // add styles completion item and auto import
     let newImport = "";
     fs.readdirSync(directory).forEach((file) => {
       if (
         new RegExp(
           `${getFilenameWithoutExtname(fileName)}.(less|css|scss)$`
-        ).test(file)
+        ).test(file) &&
+        styleDependencies.length === 0
       ) {
         newImport = `import styles from './${file}';`;
       }
     });
 
+    // style补全
     if (newImport) {
       const ast = babelParser.parse(editorText, config.parserOptions);
 
@@ -71,6 +74,7 @@ export class StyleCompletionItemProvider
         "styles",
         vscode.CompletionItemKind.Property
       );
+
       item.insertText = "styles";
       item.documentation = new vscode.MarkdownString(
         `**Auto import** \n ${newImport}`
@@ -78,10 +82,9 @@ export class StyleCompletionItemProvider
       item.additionalTextEdits = [
         vscode.TextEdit.insert(positionForNewImport, `${newImport}\n`),
       ];
+
       completions.push(item);
     }
-
-    console.log(completions);
 
     return completions;
   }
