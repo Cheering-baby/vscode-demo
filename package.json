@@ -78,7 +78,7 @@
 		"css-flatten": "^2.0.0",
 		"globby": "^9.2.0",
 		"less": "^4.1.3",
-		"lodash": "^4.17.11",
+		"lodash": "^4.17.21",
 		"mz": "^2.7.0",
 		"postcss": "^8.4.16",
 		"reflect-metadata": "^0.1.13",

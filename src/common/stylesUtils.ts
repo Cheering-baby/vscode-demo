@@ -11,22 +11,21 @@ import logger from "./logger";
 
 export function existStyleDependencies(code:string) {
   const reg = /import *\w* *from *(w|'|"|.)*\/\w*.(less|css|sass|scss)/g;
-  console.log(code.match(reg));
-  return reg.test(code);
+  return code.match(reg);
 }
 
 // Find style dependencies, like import style form './index.css';
 export function findStyleDependencies(code: string, config: any) {
   const StyleDependencies: IStyleDependency[] = [];
-  console.log(code);
+  // console.log(code);
   try {
     const ast = babelParser.parse(code, config.parserOptions);
-    console.log(ast);
+    // console.log(ast);
     // @ts-ignore
     traverse(ast, {
       ImportDeclaration(path) {
         const { node } = path;
-        console.log(node);
+        // console.log(node);
         // Example /\.css$|\.scss$|\.sass$/
         if (
           new RegExp(

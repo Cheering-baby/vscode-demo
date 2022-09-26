@@ -118,3 +118,8 @@ export const EXCLUDE_EXT_NAMES = ['.d.ts', '.test.js', '.test.jsx', '.test.ts', 
 export const SUPPORT_LANGUAGE = ['javascript', 'typescript', 'typescriptreact'];
 
 export const supportCssFiles = ["css", "scss", "sass", "less"];
+
+export type CamelCaseValues = false | true | "dashes";
+export type AliasFromUserOptions = Record<string, string>;
+export type AliasFromTsConfig = Record<string, string[]>;
+export type PathAlias = AliasFromUserOptions | AliasFromTsConfig;
