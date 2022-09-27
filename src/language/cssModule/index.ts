@@ -1,7 +1,8 @@
 import * as vscode from "vscode";
 import { SUPPORT_LANGUAGE } from "../../common/types";
-import CSSModuleCompletionProvider from "./cssModuleCompletionProvider";
-import CSSModuleDefineProvider from "./cssModuleDefinitionProvider";
+import CSSModuleCompletionProvider from "./CompletionProvider";
+import CSSModuleDefineProvider from "./DefinitionProvider";
+import { CSSModuleHoverProvider } from './HoverProvider';
 import StyleCompletionItemProvider from "./styleCompletionItemProvider";
 import StylesAutoCompletionItemProvider from "./stylesAutoCompletionItemProvider";
 
@@ -35,6 +36,13 @@ export default function styleInfoViewer(context: vscode.ExtensionContext) {
     vscode.languages.registerDefinitionProvider(
       SUPPORT_LANGUAGE,
       new CSSModuleDefineProvider()
+    )
+  );
+
+  context.subscriptions.push(
+    vscode.languages.registerHoverProvider(
+      SUPPORT_LANGUAGE,
+      new CSSModuleHoverProvider()
     )
   );
 }
