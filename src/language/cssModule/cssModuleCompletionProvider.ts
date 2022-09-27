@@ -26,8 +26,7 @@ export default class CSSModuleCompletionProvider
     document: TextDocument,
     position: Position
   ): Promise<CompletionItem[]> {
-    const currentDir = path.dirname(document.uri.fsPath);
-    const { line } = getFocusCodeInfo(document, position);
+    const { line, directory } = getFocusCodeInfo(document, position);
 
     const lineText = line.text;
 
@@ -43,7 +42,7 @@ export default class CSSModuleCompletionProvider
     const [obj, field] = matchWords.split(".");
 
     const importModule = findImportModule(document.getText(), obj);
-    const importPath = path.resolve(currentDir, importModule);
+    const importPath = path.resolve(directory, importModule);
     if (importPath === "") {
       return Promise.resolve([]);
     }

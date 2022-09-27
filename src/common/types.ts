@@ -123,3 +123,13 @@ export type CamelCaseValues = false | true | "dashes";
 export type AliasFromUserOptions = Record<string, string>;
 export type AliasFromTsConfig = Record<string, string[]>;
 export type PathAlias = AliasFromUserOptions | AliasFromTsConfig;
+
+export interface ClickInfo {
+  importModule: string;
+  targetClass: string;
+}
+
+export interface Keyword {
+  obj: string;
+  field: string;
+}

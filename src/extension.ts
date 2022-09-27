@@ -10,7 +10,7 @@ import {
   LocaleDefinitionProvider,
   LocalKeyCompletionItemProvider,
 } from "./language/locale";
-import styleInfoViewer from './language/style';
+import styleInfoViewer from './language/cssModule';
 import { UmircDecoration } from "./language/umircDecoration";
 import { LocalService } from "./services/localeService";
 import {
