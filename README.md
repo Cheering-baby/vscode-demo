@@ -8,7 +8,9 @@ Extension "Cre Plugin". Based on umi pro.
 
 - styles类名跳转
 
-### 2022.09.21
+### 2022.20.07
+
+- className自动补全，定义跳转，显示
 
 ### 2022.09.19
 - locale 自动补全提示

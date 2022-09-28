@@ -133,3 +133,11 @@ export interface Keyword {
   obj: string;
   field: string;
 }
+
+export interface IStyle {
+  type: string;
+  selectors: string[];
+  position: IStylePosition;
+  file: string;
+  code: string;
+}

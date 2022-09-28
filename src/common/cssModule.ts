@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from "fs";
 import { Position, TextDocument } from "vscode";
 import * as _ from "lodash";
-import { ClickInfo, Keyword } from "./types";
+import { ClickInfo, IStyle, Keyword } from "./types";
 import css from "css";
 import path = require("path");
 const postcss = require("postcss");
@@ -237,10 +237,8 @@ function cssParseDeal(rule: any, targetClass) {
     rule?.type === "rule" &&
     rule?.selector.replace(".", "") === targetClass
   ) {
-    console.log(1);
     return rule;
   } else if (rule?.nodes?.length > 0) {
-    console.log(2);
     for (let i = 0; i < rule.nodes.length; i++) {
       const target = cssParseDeal(rule.nodes[i], targetClass);
       if (target) {
@@ -260,11 +258,10 @@ export async function matchClassNameInfo(filePath: string, className: string) {
   }
   const fileContent = readFileSync(filePath, { encoding: "utf8" });
   // const result = await postcss().process(fileContent, { syntax });
-  // console.log(result);
-  const result = postcss.parse(fileContent);
-  console.log(result);
   // const { stylesheet } = css.parse(content);
-  // console.log("stylesheet", stylesheet);
+  const result = syntax.parse(fileContent);
+  // const result = postcss.parse(fileContent);
   const target = cssParseDeal(result, className);
+
   return target;
 }
