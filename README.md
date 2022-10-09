@@ -4,21 +4,6 @@ Extension "Cre Plugin". Based on umi pro.
 
 ## Features
 
-## 将要提供的功能
-
-- styles类名跳转
-
-### 2022.20.07
-
-- className自动补全，定义跳转，显示
-
-### 2022.09.19
-- locale 自动补全提示
-- locale 跳转定义文件
-- 支持packages和非packages
-
-## Bugfix
-
-### 2022.09.20
-
-- 修复工作区多个目录跳转地址错误的问题
+- config文件属性行末文字提示
+- styles类名跳转, 补全, hover显示
+- locale自动补全提示，跳转定义文件, 支持packages和非packages

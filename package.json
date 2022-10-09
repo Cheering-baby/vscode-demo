@@ -2,11 +2,11 @@
 	"name": "cre-plugin",
 	"displayName": "Cre Plugin",
 	"description": "",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"engines": {
 		"vscode": "^1.69.0"
 	},
-	"icon": "creIcon.png",
+	"icon": "icon.png",
 	"categories": [
 		"Other"
 	],

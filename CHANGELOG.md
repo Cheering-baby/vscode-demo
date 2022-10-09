@@ -7,6 +7,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## 0.0.3
 
 - 配置文件描述
+- styles属性补全，hover显示和文件跳转
 
 ## 0.0.2
 

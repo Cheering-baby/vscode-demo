@@ -40,24 +40,24 @@ export async function activate(context: vscode.ExtensionContext) {
   workspace.onDidChangeWorkspaceFolders(() => loadVscodeService(vscodeService));
   workspace.onDidChangeConfiguration(() => loadVscodeService(vscodeService));
 
-  // // locale自动补全
-  // context.subscriptions.push(
-  //   vscode.languages.registerCompletionItemProvider(
-  //     SUPPORT_LANGUAGE,
-  //     new LocalKeyCompletionItemProvider(localeService),
-  //     "=",
-  //     " ",
-  //     ":"
-  //   )
-  // );
+  // locale自动补全
+  context.subscriptions.push(
+    vscode.languages.registerCompletionItemProvider(
+      SUPPORT_LANGUAGE,
+      new LocalKeyCompletionItemProvider(localeService),
+      "=",
+      " ",
+      ":"
+    )
+  );
 
-  // // locale定义文件跳转
-  // context.subscriptions.push(
-  //   vscode.languages.registerDefinitionProvider(
-  //     SUPPORT_LANGUAGE,
-  //     new LocaleDefinitionProvider(localeService)
-  //   )
-  // );
+  // locale定义文件跳转
+  context.subscriptions.push(
+    vscode.languages.registerDefinitionProvider(
+      SUPPORT_LANGUAGE,
+      new LocaleDefinitionProvider(localeService)
+    )
+  );
 
   styleInfoViewer(context);
 
