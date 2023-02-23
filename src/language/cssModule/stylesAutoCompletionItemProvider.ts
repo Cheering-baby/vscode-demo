@@ -42,7 +42,7 @@ export default class StylesAutoCompletionItemProvider
     // In case of cursor shaking
     const word = line.text.substring(0, position.character);
     const styleDependencies = existStyleDependencies(editorText);
-    console.log(styleDependencies);
+    // console.log(styleDependencies);
 
     // for (let i = 0; i < styleDependencies.length; i++) {
     //   if (

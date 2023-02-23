@@ -1,6 +1,6 @@
 import { join, resolve } from "path";
 import * as vscode from "vscode";
-import { QuoteType, QuoteCharMap, ICodeInfo } from "./types";
+import { QuoteType, QuoteCharMap, ICodeInfo, IUmiProConfig } from "./types";
 import { Range, Position } from "vscode";
 import { SourceLocation } from "@babel/types";
 
@@ -85,4 +85,8 @@ export function getFilenameWithoutExtname(fileName: string): string {
   } else {
     return fileName;
   }
+}
+
+export function isLocaleFile(fileName: string, config: IUmiProConfig): boolean {
+  return fileName.indexOf(config.localeFolder) !== -1;
 }

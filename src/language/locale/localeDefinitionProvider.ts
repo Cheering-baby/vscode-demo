@@ -7,6 +7,7 @@ import {
 import * as vscode from "vscode";
 import { TextDocumentUtils } from "../../common/document";
 import { QuoteType } from "../../common/types";
+import { isLocaleFile } from '../../common/utils';
 
 @Service()
 export class LocaleDefinitionProvider implements vscode.DefinitionProvider {
@@ -24,11 +25,15 @@ export class LocaleDefinitionProvider implements vscode.DefinitionProvider {
     position: vscode.Position
   ) {
     const filePath = document.uri.fsPath;
-
     const textDocumentUtils = new TextDocumentUtils(document);
     const config = this.vscodeService.getConfig(filePath);
     const localeFile = this.localeService.getValidLocaleFile(filePath);
     if (!config || !localeFile) {
+      return;
+    }
+
+    // locale文件不跳转
+    if(isLocaleFile(filePath, config)){
       return;
     }
 
@@ -55,8 +60,12 @@ export class LocaleDefinitionProvider implements vscode.DefinitionProvider {
       return;
     }
     const localeKey = document.getText(range).slice(1, -1);
-
-    const localeKeys = this.localeService.getKeys(filePath);
+    let localeKeys;
+    try {
+      localeKeys = this.localeService.getKeys(filePath);
+    } catch (e) {
+      console.log(e.message);
+    }
 
     if (!localeKeys.includes(localeKey)) {
       return;
