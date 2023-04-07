@@ -45,7 +45,17 @@
 					"description": "Customize locale folder"
 				}
 			}
-		}
+		},
+		"snippets": [
+      {
+        "language": "typescript",
+        "path": "./src/snippets/generated.json"
+      },
+      {
+        "language": "typescriptreact",
+        "path": "./src/snippets/generated.json"
+      }
+    ]
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",

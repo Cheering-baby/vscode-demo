@@ -1,0 +1,8 @@
+{
+  "exportType": {
+    "body": ["export type ${1:first} = {${2:second}}"],
+    "key": "exportType",
+    "prefix": "test",
+    "scope": "typescript,typescriptreact"
+  }
+}
