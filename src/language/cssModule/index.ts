@@ -23,7 +23,7 @@ export default function styleInfoViewer(context: vscode.ExtensionContext) {
   //     "."
   //   )
   // );
-
+  // style补充
   context.subscriptions.push(
     vscode.languages.registerCompletionItemProvider(
       SUPPORT_LANGUAGE,
@@ -31,14 +31,14 @@ export default function styleInfoViewer(context: vscode.ExtensionContext) {
       "."
     )
   );
-
+  // style类名跳转
   context.subscriptions.push(
     vscode.languages.registerDefinitionProvider(
       SUPPORT_LANGUAGE,
       new CSSModuleDefineProvider()
     )
   );
-
+  // style hover提示
   context.subscriptions.push(
     vscode.languages.registerHoverProvider(
       SUPPORT_LANGUAGE,

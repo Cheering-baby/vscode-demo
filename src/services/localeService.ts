@@ -8,6 +8,7 @@ import { existsSync, readdirSync } from "fs";
 import * as vscode from "vscode";
 import { getFolderNameByOne, getFolderNameByTwo } from '../common/utils';
 
+// 缓存Locale文件和定义Locale的一些操作函数
 export interface ILocaleService {
   getData(): {
     [projectPath: string]: ILocale[];

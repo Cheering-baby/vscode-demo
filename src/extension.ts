@@ -5,11 +5,8 @@ import * as vscode from "vscode";
 import { workspace } from "vscode";
 import { getUmiFileWatcher } from "./common/fileWatcher";
 import logger from "./common/logger";
-import { SUPPORT_LANGUAGE } from "./common/types";
 import styleInfoViewer from "./language/cssModule";
 import localeContext from "./language/locale";
-import { LocaleDefinitionProvider } from "./language/locale/localeDefinitionProvider";
-import { LocalKeyCompletionItemProvider } from "./language/locale/localeKeyCompletionItemProvider";
 import { UmircDecoration } from "./language/umircDecoration";
 import { LocalService } from "./services/localeService";
 import {
@@ -29,11 +26,12 @@ export async function activate(context: vscode.ExtensionContext) {
   }
 
   const localeService = new LocalService();
+  const vscodeService = Container.get(VscodeServiceToken);
+
   umiFileWatcher.onDidCreate((e) => localeService.updateFile(e.fsPath));
   umiFileWatcher.onDidChange((e) => localeService.updateFile(e.fsPath));
   umiFileWatcher.onDidDelete((e) => localeService.deleteFile(e.fsPath));
-
-  let vscodeService = Container.get(VscodeServiceToken);
+  
   await loadVscodeService(vscodeService);
   await localeService.initLocales();
   workspace.onDidChangeWorkspaceFolders(() => loadVscodeService(vscodeService));
